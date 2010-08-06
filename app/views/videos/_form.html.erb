@@ -1,0 +1,12 @@
+<% content_for :head do %>
+	<script type="text/javascript">
+	$(document).ready(function() {
+		$('#someID').uploadify({
+			'uploader': '/path/to/uploadify.swf',
+			'script': '/path/to/uploadify.php',
+			'folder': '/path/to/uploads-folder',
+			'cancelImg': '/path/to/cancel.png'
+		});
+	});
+	</script>
+<% end %>

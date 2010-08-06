@@ -1,0 +1,106 @@
+<% content_for :head do %>
+	
+	<%
+	    session_key = ActionController::Base.session_options[:key]
+
+	    uploadify_options = {
+	      	'uploader' => '/flash/uploadify.swf', 
+	      	'cancelImg' => '/images/cancel.png',
+			'script' => videos_url,
+			'buttonText' => "Add Files",
+			'scriptData' => {
+		      session_key => cookies[session_key],
+		      'authenticity_token' => u(u(form_authenticity_token))
+		    },
+			'queueID' => 'fileQueue',
+			'auto'    => true,
+			'multi'   => true
+			# ,
+			# 			'onComplete' => 'function(){console.log("bang!");}',
+			# 			'onProgress' => 'function(){console.log("bang!");return true;}'
+	    }
+	%>
+	
+	<%= stylesheet_link_tag "uploadify" %>
+	<%= javascript_include_tag "jquery.uploadify.v2.1.0.min","swfobject","jquery.video","jquery.wait_progress","jquery.periodicalupdater", :cache => "uploadify_scripts" %>
+	
+	<script type="text/javascript">
+		
+		var VIDEO_TEMPLATE;
+		var videos = [];
+		
+		$(document).ready(function() {
+			
+			VIDEO_TEMPLATE = $("#video_template .video");
+			
+			<% @videos.each do |video| %>
+				videos[<%= video.id %>] = $("<div>").video(JSON.parse('<%= video.to_json %>').video,{template: VIDEO_TEMPLATE});
+				$("#videos").append(videos[<%= video.id %>]);
+			<% end %>
+			
+			$("#uploadify").uploadify({
+				"buttonText":"Add Files",
+				"script":"http://zencoder.local/videos",
+				"cancelImg":"/images/cancel.png",
+				"onComplete":uploadComplete,
+				"scriptData":{"authenticity_token":"n5Euji1zReTbCk5B4EpzT1kN5zltoLAYS%252B22ArkXE9Q%253D","_zencoder_session":"BAh7CDoPc2Vzc2lvbl9pZCIlNDUxY2YwZDBiZmFiMjNlNzY0NWNiNDBkNmE5NWNjZmQ6EF9jc3JmX3Rva2VuIjFuNUV1amkxelJlVGJDazVCNEVwelQxa041emx0b0xBWVMrMjJBcmtYRTlRPSIKZmxhc2hJQzonQWN0aW9uQ29udHJvbGxlcjo6Rmxhc2g6OkZsYXNoSGFzaHsGOgtub3RpY2UiJFZpZGVvIHdhcyBzdWNjZXNzZnVsbHkgdXBkYXRlZC4GOgpAdXNlZHsGOwhG--b82fc61835f29f77ae03df8c0e680b8d605567dd"},
+				// "onProgress":function(){console.log("bang!")},
+				"multi":true,
+				"queueID":"fileQueue",
+				"uploader":"/flash/uploadify.swf",
+				"auto":true
+			});
+			
+		});
+		
+		function uploadComplete(event, ID, fileObj, response, data){
+			objVideo = JSON.parse(response).video
+			videos[objVideo.id] = $("<div>").video(objVideo,{template: VIDEO_TEMPLATE});
+			$('#videos').prepend(videos[objVideo.id]);
+		}
+		
+	</script>
+<% end %>
+
+<div style="float:left;width:500px;">
+	<div id="fileQueue"></div>
+	<input type="file" name="uploadify" id="uploadify" />
+	<p><a href="javascript:jQuery('#uploadify').uploadifyClearQueue()">Cancel All Uploads</a></p>
+
+	<br />
+</div>
+
+<div style="margin-left:520px;width:450px;">
+
+	<h1>Listing videos</h1>
+	
+	<div id="videos"></div>
+	
+</div>
+
+<div id="video_template" style="display:none;">
+
+	<div class="video" id="video_0">
+		<table width="100%">
+			<tr>
+				<td class="thumbnail"><div></div></td>
+				<td class="details">
+					<div class="header">
+						<span class="title">Processing</span>
+						<span class="status"><%= image_tag("progress.gif", :style => "vertical-align:middle;")%> <span>Waiting...</span></span>
+					</div>
+					<div class="info">
+						Duration: <span class="duration">Calculating</span><br/>
+						Added: <span class="timestamp">Just Now</span>
+					</div>
+					<div class="links">
+						<span><%= link_to("Edit", "#", :class => "edit small shadow pale abutton") %></span>
+						<span><%= link_to("View", "#", :rel => "facebox", :class => "view small pale abutton") %></span>
+						<span style="float:right;"><%= link_to("Delete", "#", :class => "delete small red abutton") %></span>
+					</div>
+				</td>
+			</tr>
+		</table>
+	</div>
+
+</div>

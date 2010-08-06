@@ -1,0 +1,9 @@
+development:
+    access_key_id: 0HG2MZJSC52K1HKENAG2
+    secret_access_key: 6fYT/pNURA4lFYdoBfdVbuzE0A7CcLp+ThCPDsbS
+test:
+    access_key_id: 0HG2MZJSC52K1HKENAG2
+    secret_access_key: 6fYT/pNURA4lFYdoBfdVbuzE0A7CcLp+ThCPDsbS
+production:
+    access_key_id: 0HG2MZJSC52K1HKENAG2
+    secret_access_key: 6fYT/pNURA4lFYdoBfdVbuzE0A7CcLp+ThCPDsbS
