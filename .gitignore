@@ -1,5 +1,5 @@
-config/database.yml
-config/amazon_s3.yml
+# config/database.yml
+# config/amazon_s3.yml
 *~
 *.cache
 *.log
