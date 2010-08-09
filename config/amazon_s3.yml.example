@@ -1,0 +1,9 @@
+development:
+    access_key_id: YOUR_KEY_ID_HERE
+    secret_access_key: YOUR_SECRET_KEY_HERE
+test:
+    access_key_id: YOUR_KEY_ID_HERE
+    secret_access_key: YOUR_SECRET_KEY_HERE
+production:
+    access_key_id: YOUR_KEY_ID_HERE
+    secret_access_key: YOUR_SECRET_KEY_HERE

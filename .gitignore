@@ -1,6 +1,5 @@
 config/database.yml
-config/*.sphinx.conf
-config/s3_credentials.yml
+config/amazon_s3.yml
 *~
 *.cache
 *.log
@@ -9,7 +8,6 @@ tmp/**/*
 .DS_Store
 db/cstore/**
 db/schema.rb
-db/sphinx/**
 db/schema.rb
 doc/api
 doc/app
@@ -56,6 +54,3 @@ log
 tmp/*
 .autotest
 public/system/local_assets/*
-public/system/avatars/*
-public/system/assets/*
-public/system/logos/*
