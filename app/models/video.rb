@@ -113,6 +113,8 @@ class Video < ActiveRecord::Base
     if zc_state == "finished"
       zencoder_job_details
       self.complete!
+    elsif zc_state == "failed"
+      self.fail!
     else
       zc_status = get_zencoder_status
       self.complete! if zc_status.body["state"] == "finished"
