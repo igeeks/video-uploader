@@ -8,9 +8,9 @@ class Video < ActiveRecord::Base
   
   attr_accessor :thumbnail_url, :duration_in_words, :dimensions
   
-  ZENCODER_API_KEY = "ab56109045345b1bf87650c84474e7f4"
+  ZENCODER_API_KEY = "YOUR_ZENCODER_API_KEY"
   S3_CREDENTIALS = "#{RAILS_ROOT}/config/amazon_s3.yml"
-  S3_BUCKET = "blography"
+  S3_BUCKET = "YOUR_BUCKET_HERE"
    
   has_attached_file :local_asset
   has_attached_file :asset, :storage => :s3,
