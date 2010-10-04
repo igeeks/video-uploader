@@ -86,6 +86,7 @@
 			if (self.updater != null){
 				self.updater.stop();
 				self.updater = null;
+				self.find(".links").addClass("disabled");
 				self.find(".wait_progress_overlay").remove();
 			}
 			self.find(".duration").html("N/A");
