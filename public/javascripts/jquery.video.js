@@ -62,6 +62,10 @@
 				self.find(".duration").html(duration({defaultText: "Unknown"}));
 				self.find(".header img").hide();
 				self.find(".duration").html(duration());
+			}else if (objVideo.state.toLowerCase() == "failed"){
+				fail(self);
+				self.find(".status").removeClass("transcoding");
+				self.find(".header img").hide();
 			}else if (self.updater == null){
 				beginUpdate(self);
 			}
@@ -77,7 +81,17 @@
 			self.find(".links").removeClass("disabled");
 			self.removeClass("working");
 		}
-
+		
+		function fail(self){
+			if (self.updater != null){
+				self.updater.stop();
+				self.updater = null;
+				self.find(".wait_progress_overlay").remove();
+			}
+			self.find(".duration").html("N/A");
+			self.removeClass("working");
+		}
+		
 		function beginUpdate(self){
 			self.find(".links").addClass("disabled");
 			self.addClass("working");
