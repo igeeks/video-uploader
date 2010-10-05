@@ -33,7 +33,28 @@
 
 			self.find(".title").html(objVideo.title);
 			self.find(".timestamp").html(humane_date(objVideo.created_at));
+			
+			initLinks(self);
+			refresh(self);
+		}
+		
+		function refresh(self){
+			self.find(".status span").html(objVideo.state.toTitleCase());
+			self.find(".status").addClass(objVideo.state.toLowerCase());
 
+			if (objVideo.state.toLowerCase() == "complete"){
+				stopProcessing(self);
+				updateInfo(self);
+				complete(self);
+			}else if (objVideo.state.toLowerCase() == "failed"){
+				stopProcessing(self);
+				fail(self);
+			}else if (self.updater == null){
+				beginUpdate(self);
+			}
+		}
+		
+		function initLinks(self){
 			self.find(".links a.edit").attr("href","/videos/" + objVideo.id + "/edit")
 			self.find(".links a.view").attr("href","/videos/" + objVideo.id + "/")
 			self.find(".links a.delete").attr("href","/videos/" + objVideo.id + "/")
@@ -46,29 +67,18 @@
 				}
 				return false;
 			});
-
-			refresh(self);
 		}
-
-		function refresh(self){
-			self.find(".status span").html(objVideo.state.toTitleCase());
-			self.find(".status").addClass(objVideo.state.toLowerCase());
-
-			if (objVideo.state.toLowerCase() == "complete"){
-				complete(self);
-				self.find(".status").removeClass("transcoding");
-				var img_src = "http://s3.amazonaws.com/blography/assets/" + objVideo.id + "/thumbnails/thumb_0001.png"
-				self.find(".thumbnail div").append($('<img>').attr("src", img_src));
-				self.find(".duration").html(duration({defaultText: "Unknown"}));
-				self.find(".header img").hide();
-				self.find(".duration").html(duration());
-			}else if (objVideo.state.toLowerCase() == "failed"){
-				fail(self);
-				self.find(".status").removeClass("transcoding");
-				self.find(".header img").hide();
-			}else if (self.updater == null){
-				beginUpdate(self);
-			}
+		
+		function updateInfo(self){
+			var img_src = "http://s3.amazonaws.com/blography/assets/" + objVideo.id + "/thumbnails/thumb_0001.png"
+			self.find(".thumbnail div").append($('<img>').attr("src", img_src));
+			self.find(".duration").html(duration({defaultText: "Unknown"}));
+			self.find(".duration").html(duration());
+		}
+		
+		function stopProcessing(self){
+			self.find(".status").removeClass("transcoding");
+			self.find(".header img").hide();
 		}
 
 		function complete(self){
@@ -86,9 +96,11 @@
 			if (self.updater != null){
 				self.updater.stop();
 				self.updater = null;
-				self.find(".links").addClass("disabled");
 				self.find(".wait_progress_overlay").remove();
 			}
+			self.find(".links a.edit").hide();
+			self.find(".links a.view").hide();
+			self.find(".links").removeClass("disabled");
 			self.find(".duration").html("N/A");
 			self.removeClass("working");
 		}
